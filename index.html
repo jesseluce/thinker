@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>THINKer — Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3A86FF',
+            accent: '#FF6B6B',
+            surface: '#ffffff',
+            background: '#f6f8fc',
+            muted: '#6b7280',
+            success: '#10B981',
+            error: '#EF4444',
+            warning: '#F59E0B',
+            gradA: '#6a5cff',
+            gradB: '#7dd3fc'
+          },
+          borderRadius: {
+            'xl': '20px',
+            'lg': '16px',
+            'md': '12px',
+          },
+          boxShadow: {
+            'sm': '0 1px 2px rgba(0,0,0,.06)',
+            'md': '0 6px 20px rgba(0,0,0,.10)',
+            'lg': '0 10px 25px rgba(0,0,0,.15)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both',
+            'slide-up': 'slideUp 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both',
+            'bounce': 'bounce 0.12s cubic-bezier(0.2, 0.7, 0.2, 1) both',
+            'ripple': 'ripple 0.6s linear',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(6px)' },
+              '100%': { opacity: '1', transform: 'none' }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(100%)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
+            },
+            bounce: {
+              '0%, 100%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(0.98)' }
+            },
+            ripple: {
+              '0%': { transform: 'scale(0)', opacity: '1' },
+              '100%': { transform: 'scale(12)', opacity: '0' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --surface: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #3A86FF;
+      --accent: #FF6B6B;
+      --success: #10B981;
+      --error: #EF4444;
+      --warning: #F59E0B;
+      --grad-a: #6a5cff;
+      --grad-b: #7dd3fc;
+      --r-xl: 20px;
+      --r-lg: 16px;
+      --r-md: 12px;
+      --sh-sm: 0 1px 2px rgba(0,0,0,.06);
+      --sh-md: 0 6px 20px rgba(0,0,0,.10);
+      --sh-lg: 0 10px 25px rgba(0,0,0,.15);
+      --t-fast: 120ms;
+      --t-med: 220ms;
+      --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background-color: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .app-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: calc(env(safe-area-inset-top, 0) + 12px) 16px calc(env(safe-area-inset-bottom, 0) + 20px);
+      animation: fadeIn var(--t-med) var(--ease) both;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn var(--t-med) var(--ease) both;
+    }
+
+    #main-menu {
+      overflow-y: auto;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-weight: 800;
+      font-size: 15px;
+      background: #fff;
+      color: var(--text);
+      box-shadow: var(--sh-sm);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+      min-height: 48px;
+    }
+
+    .btn:hover {
+      box-shadow: var(--sh-md);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+      animation: bounce var(--t-fast) var(--ease);
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(0,0,0,.12);
+      pointer-events: none;
+      animation: ripple 0.6s linear;
+    }
+
+    .option-btn {
+      background: var(--surface);
+      border: 2px solid #e5e7eb;
+      text-align: left;
+      transition: all var(--t-fast) var(--ease);
+    }
+
+    .option-btn.correct {
+      background: #d1fae5;
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .option-btn.incorrect {
+      background: #fee2e2;
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    .option-btn.selected {
+      background: #dbeafe;
+      border-color: var(--primary);
+    }
+
+    .feedback-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top-left-radius: var(--r-xl);
+      border-top-right-radius: var(--r-xl);
+      box-shadow: var(--sh-lg);
+      padding: 24px 20px;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform var(--t-med) var(--ease), opacity var(--t-med) var(--ease);
+      z-index: 100;
+    }
+
+    .feedback-sheet.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--t-med) var(--ease);
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      max-width: 90%;
+      width: 350px;
+      transform: scale(0.9);
+      transition: transform var(--t-med) var(--ease);
+    }
+
+    .modal.show .modal-content {
+      transform: scale(1);
+    }
+
+    .streak-badge {
+      background: linear-gradient(135deg, #fde68a, #f59e0b);
+      color: #7c5e00;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-weight: 800;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .difficulty-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .difficulty-badge.easy {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .difficulty-badge.medium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .difficulty-badge.hard {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container" role="application">
+    <!-- Main Menu Screen -->
+    <div id="main-menu" class="screen active">
+      <!-- Header / Logo -->
+      <header class="flex justify-center items-center mb-2">
+        <a href="#" class="logo flex items-center gap-2 no-underline text-inherit" aria-label="THINKer home">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <span class="font-bold text-2xl tracking-tight">THINK<span class="text-accent">er</span></span>
+        </a>
+      </header>
+
+      <!-- Tagline -->
+      <p class="text-center text-muted text-sm mt-1 mb-6">A fresh challenge for your mind, every day.</p>
+
+      <!-- Feature Card -->
+      <section class="bg-gradient-to-r from-gradA to-gradB rounded-2xl p-5 text-white mb-6 shadow-lg" aria-labelledby="today-title">
+        <span class="inline-flex items-center px-3 py-1 bg-white bg-opacity-20 rounded-full text-xs font-bold">TODAY'S CHALLENGE</span>
+        <h2 id="today-title" class="text-xl font-bold mt-3 mb-1">Science Trivia</h2>
+        <p class="text-sm opacity-95 mb-4">Ready to test your knowledge?</p>
+        <button id="start-today-btn" class="btn w-full bg-white text-primary font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">
+          Start Today's Puzzle <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </section>
+
+      <!-- Navigation List -->
+      <nav class="flex flex-col gap-3 mb-6" aria-label="Primary navigation">
+        <a href="#" class="list-item flex items-center justify-between gap-3 p-4 rounded-xl bg-surface shadow-sm hover:shadow-md transition-all" onclick="showScreen('archive-screen'); return false;" aria-label="Go to archive">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-pink-400 flex items-center justify-center text-white">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div>
+              <div class="font-bold text-base">Archive</div>
+              <div class="text-muted text-sm">Review recent puzzles</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-muted text-sm">30 days</div>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+          </div>
+        </a>
+
+        <a href="#" class="list-item flex items-center justify-between gap-3 p-4 rounded-xl bg-surface shadow-sm hover:shadow-md transition-all" onclick="showScreen('profile-screen'); return false;" aria-label="Go to profile">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-indigo-500 flex items-center justify-center text-white">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <div class="font-bold text-base">Profile</div>
+              <div class="text-muted text-sm">Your stats</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="streak-badge">
+              <i class="fas fa-fire"></i> 5 day streak
+            </div>
+            <i class="fas fa-chevron-right text-gray-400"></i>
+          </div>
+        </a>
+
+        <a href="#" class="list-item flex items-center justify-between gap-3 p-4 rounded-xl bg-surface shadow-sm hover:shadow-md transition-all" onclick="showScreen('settings-screen'); return false;" aria-label="Go to settings">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div>
+              <div class="font-bold text-base">Settings</div>
+              <div class="text-muted text-sm">Difficulty & preferences</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-chevron-right text-gray-400"></i>
+          </div>
+        </a>
+      </nav>
+
+      <!-- Footer Date -->
+      <footer id="today-date" class="text-center text-muted text-xs mt-auto" aria-live="polite"></footer>
+    </div>
+
+    <!-- Today's Puzzle Screen -->
+    <div id="puzzle-screen" class="screen">
+      <div class="flex items-center mb-6">
+        <button id="back-to-main" class="btn w-10 h-10 rounded-full flex items-center justify-center p-0 mr-3">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="text-xl font-bold">Today's Puzzle</h1>
+        <div class="ml-auto">
+          <span class="difficulty-badge easy">Easy</span>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <div class="flex justify-between text-sm text-muted mb-1">
+          <span>Question 1 of 1</span>
+          <span>00:00</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill w-0"></div>
+        </div>
+      </div>
+
+      <div class="bg-surface rounded-2xl p-5 shadow-md mb-6 flex-1 flex flex-col">
+        <h2 class="text-lg font-bold mb-4">What is the chemical symbol for gold?</h2>
+        <div class="grid grid-cols-1 gap-3 mb-6 flex-1">
+          <button class="option-btn btn text-left p-4 rounded-xl">Au</button>
+          <button class="option-btn btn text-left p-4 rounded-xl">Ag</button>
+          <button class="option-btn btn text-left p-4 rounded-xl">Go</button>
+          <button class="option-btn btn text-left p-4 rounded-xl">Gd</button>
+        </div>
+        <button id="submit-answer" class="btn bg-primary text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">
+          Submit Answer
+        </button>
+      </div>
+    </div>
+
+    <!-- Archive Screen -->
+    <div id="archive-screen" class="screen">
+      <div class="flex items-center mb-6">
+        <button class="btn w-10 h-10 rounded-full flex items-center justify-center p-0 mr-3" onclick="showScreen('main-menu')">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="text-xl font-bold">Puzzle Archive</h1>
+      </div>
+
+      <div class="bg-surface rounded-2xl p-4 shadow-md mb-6 flex-1 overflow-y-auto">
+        <div class="grid grid-cols-1 gap-3">
+          <!-- Archive items will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profile-screen" class="screen">
+      <div class="flex items-center mb-6">
+        <button class="btn w-10 h-10 rounded-full flex items-center justify-center p-0 mr-3" onclick="showScreen('main-menu')">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="text-xl font-bold">Your Profile</h1>
+      </div>
+
+      <div class="bg-surface rounded-2xl p-5 shadow-md mb-6">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl mr-4">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold">Thinker</h2>
+            <div class="flex items-center gap-2">
+              <div class="streak-badge">
+                <i class="fas fa-fire"></i> 5 day streak
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="bg-blue-50 rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-primary">24</div>
+            <div class="text-muted text-sm">Puzzles Solved</div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-success">83%</div>
+            <div class="text-muted text-sm">Accuracy</div>
+          </div>
+        </div>
+
+        <h3 class="font-bold mb-3">Achievements</h3>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-yellow-50 rounded-xl p-3 text-center">
+            <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-2">
+              <i class="fas fa-bolt text-yellow-500"></i>
+            </div>
+            <div class="text-xs font-bold">Speedster</div>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-3 text-center">
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+              <i class="fas fa-brain text-blue-500"></i>
+            </div>
+            <div class="text-xs font-bold">Brainiac</div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-3 text-center">
+            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
+              <i class="fas fa-fire text-green-500"></i>
+            </div>
+            <div class="text-xs font-bold">Streaker</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings-screen" class="screen">
+      <div class="flex items-center mb-6">
+        <button class="btn w-10 h-10 rounded-full flex items-center justify-center p-0 mr-3" onclick="showScreen('main-menu')">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="text-xl font-bold">Settings</h1>
+      </div>
+
+      <div class="bg-surface rounded-2xl p-5 shadow-md mb-6 flex-1">
+        <div class="mb-6">
+          <h3 class="font-bold mb-3">Difficulty</h3>
+          <div class="grid grid-cols-3 gap-3">
+            <button class="btn bg-blue-50 text-primary font-bold py-3 px-4 rounded-xl">Easy</button>
+            <button class="btn bg-yellow-50 text-warning font-bold py-3 px-4 rounded-xl">Medium</button>
+            <button class="btn bg-red-50 text-error font-bold py-3 px-4 rounded-xl">Hard</button>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="font-bold mb-3">Timer</h3>
+          <div class="flex items-center justify-between bg-gray-100 rounded-xl p-4">
+            <span>Enable timer for puzzles</span>
+            <div class="relative inline-block w-12 h-6">
+              <input type="checkbox" class="opacity-0 w-0 h-0 peer" id="timer-toggle">
+              <label for="timer-toggle" class="absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-300 rounded-full transition peer-checked:bg-primary before:absolute before:h-4 before:w-4 before:left-1 before:bottom-1 before:bg-white before:rounded-full before:transition peer-checked:before:translate-x-6"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="font-bold mb-3">Reset Progress</h3>
+          <button id="reset-progress" class="btn bg-red-50 text-error font-bold py-3 px-4 rounded-xl w-full">
+            Reset All Progress
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Sheet -->
+    <div id="feedback-sheet" class="feedback-sheet">
+      <div class="flex items-center justify-center mb-4">
+        <div id="feedback-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-2xl"></div>
+      </div>
+      <h3 id="feedback-title" class="text-center text-xl font-bold mb-2"></h3>
+      <p id="feedback-message" class="text-center text-muted mb-4"></p>
+      <button id="close-feedback" class="btn bg-primary text-white font-bold py-3 px-4 rounded-xl w-full">
+        Continue
+      </button>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal" class="modal">
+      <div class="modal-content">
+        <h3 class="text-xl font-bold mb-2">Reset Progress?</h3>
+        <p class="text-muted mb-6">This will erase all your stats and achievements. This action cannot be undone.</p>
+        <div class="flex gap-3">
+          <button id="cancel-reset" class="btn flex-1 bg-gray-100 text-muted font-bold py-3 px-4 rounded-xl">Cancel</button>
+          <button id="confirm-reset" class="btn flex-1 bg-error text-white font-bold py-3 px-4 rounded-xl">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample trivia data
+    const triviaData = [
+      {
+        "id": 1,
+        "date": "2025-08-01",
+        "difficulty": "easy",
+        "question": "What is the chemical symbol for gold?",
+        "options": ["Au", "Ag", "Go", "Gd"],
+        "answerIndex": 0
+      },
+      {
+        "id": 2,
+        "date": "2025-08-02",
+        "difficulty": "medium",
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+        "answerIndex": 1
+      },
+      {
+        "id": 3,
+        "date": "2025-08-03",
+        "difficulty": "hard",
+        "question": "What is the rarest blood type in humans?",
+        "options": ["A+", "B-", "AB-", "O-"],
+        "answerIndex": 2
+      },
+      {
+        "id": 4,
+        "date": "2025-08-04",
+        "difficulty": "easy",
+        "question": "How many bones are in the human body?",
+        "options": ["206", "300", "150", "187"],
+        "answerIndex": 0
+      },
+      {
+        "id": 5,
+        "date": "2025-08-05",
+        "difficulty": "medium",
+        "question": "What is the capital of Australia?",
+        "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
+        "answerIndex": 2
+      }
+    ];
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set today's date in footer
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('today-date').textContent = today.toLocaleDateString(undefined, options);
+      
+      // Set up navigation
+      document.getElementById('start-today-btn').addEventListener('click', () => showScreen('puzzle-screen'));
+      document.getElementById('back-to-main').addEventListener('click', () => showScreen('main-menu'));
+      
+      // Set up puzzle screen
+      setupPuzzleScreen();
+      
+      // Set up archive screen
+      setupArchiveScreen();
+      
+      // Set up settings
+      document.getElementById('reset-progress').addEventListener('click', () => {
+        document.getElementById('reset-modal').classList.add('show');
+      });
+      
+      document.getElementById('cancel-reset').addEventListener('click', () => {
+        document.getElementById('reset-modal').classList.remove('show');
+      });
+      
+      document.getElementById('confirm-reset').addEventListener('click', () => {
+        // Reset logic would go here
+        document.getElementById('reset-modal').classList.remove('show');
+        showScreen('main-menu');
+      });
+      
+      // Set up feedback sheet
+      document.getElementById('close-feedback').addEventListener('click', () => {
+        document.getElementById('feedback-sheet').classList.remove('show');
+      });
+    });
+
+    // Navigation function
+    function showScreen(screenId) {
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      
+      // Show requested screen
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    // Puzzle screen setup
+    function setupPuzzleScreen() {
+      const options = document.querySelectorAll('.option-btn');
+      let selectedOption = null;
+      
+      // Add event listeners to options
+      options.forEach((option, index) => {
+        option.addEventListener('click', () => {
+          // Remove selected class from all options
+          options.forEach(opt => opt.classList.remove('selected'));
+          
+          // Add selected class to clicked option
+          option.classList.add('selected');
+          selectedOption = index;
+        });
+      });
+      
+      // Submit answer
+      document.getElementById('submit-answer').addEventListener('click', () => {
+        if (selectedOption === null) {
+          alert('Please select an answer');
+          return;
+        }
+        
+        // Get current question (first one for demo)
+        const question = triviaData[0];
+        const isCorrect = selectedOption === question.answerIndex;
+        
+        // Show feedback
+        showFeedback(isCorrect, question.options[question.answerIndex]);
+      });
+    }
+
+    // Show feedback
+    function showFeedback(isCorrect, correctAnswer) {
+      const feedbackSheet = document.getElementById('feedback-sheet');
+      const feedbackIcon = document.getElementById('feedback-icon');
+      const feedbackTitle = document.getElementById('feedback-title');
+      const feedbackMessage = document.getElementById('feedback-message');
+      
+      if (isCorrect) {
+        feedbackIcon.innerHTML = '<i class="fas fa-check text-white"></i>';
+        feedbackIcon.className = 'w-16 h-16 rounded-full flex items-center justify-center text-2xl bg-success';
+        feedbackTitle.textContent = 'Correct!';
+        feedbackMessage.textContent = 'Great job!';
+      } else {
+        feedbackIcon.innerHTML = '<i class="fas fa-times text-white"></i>';
+        feedbackIcon.className = 'w-16 h-16 rounded-full flex items-center justify-center text-2xl bg-error';
+        feedbackTitle.textContent = 'Incorrect';
+        feedbackMessage.textContent = `The correct answer is: ${correctAnswer}`;
+      }
+      
+      feedbackSheet.classList.add('show');
+      
+      // Auto-hide after 2.5 seconds
+      setTimeout(() => {
+        feedbackSheet.classList.remove('show');
+      }, 2500);
+    }
+
+    // Archive screen setup
+    function setupArchiveScreen() {
+      const archiveContainer = document.querySelector('#archive-screen .grid');
+      archiveContainer.innerHTML = '';
+      
+      // Create archive items for each trivia question
+      triviaData.forEach((item, index) => {
+        const date = new Date(item.date);
+        const formattedDate = date.toLocaleDateString(undefined, { 
+          month: 'short', 
+          day: 'numeric' 
+        });
+        
+        const archiveItem = document.createElement('div');
+        archiveItem.className = 'bg-surface rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer';
+        archiveItem.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <div class="font-bold">${item.question.substring(0, 40)}${item.question.length > 40 ? '...' : ''}</div>
+            <span class="difficulty-badge ${item.difficulty}">${item.difficulty.charAt(0).toUpperCase() + item.difficulty.slice(1)}</span>
+          </div>
+          <div class="flex justify-between items-center text-sm text-muted">
+            <span>${formattedDate}</span>
+            <span>${index === 0 ? 'Today' : ''}</span>
+          </div>
+        `;
+        
+        archiveItem.addEventListener('click', () => {
+          // In a real app, this would show the specific puzzle
+          showScreen('puzzle-screen');
+        });
+        
+        archiveContainer.appendChild(archiveItem);
+      });
+    }
+
+    // Ripple effect for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.width = ripple.style.height = size + 'px';
+        
+        const x = (e.clientX || rect.left + rect.width/2) - rect.left - size/2;
+        const y = (e.clientY || rect.top + rect.height/2) - rect.top - size/2;
+        
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        
+        btn.appendChild(ripple);
+        
+        ripple.addEventListener('animationend', () => {
+          ripple.remove();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

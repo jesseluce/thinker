@@ -1,0 +1,14 @@
+{
+  "name": "THINKer Dev",
+  "forwardPorts": [5500, 8080],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.live-server",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'Ready to go — right-click index.html > Open with Live Server'"
+}
